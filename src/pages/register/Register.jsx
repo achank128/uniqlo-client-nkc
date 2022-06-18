@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./register.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { LockOutlined } from "@mui/icons-material";
 import { register } from "../../api/apiUser";
 import { useGlobalContext } from "../../hooks/useGlobalContext";
@@ -10,7 +10,6 @@ import Navbar from "../../components/navbar/Navbar";
 const genders = ["male", "female", "unselect"];
 
 const Register = () => {
-  const navigate = useNavigate();
   const { setCurrentUser } = useGlobalContext();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();

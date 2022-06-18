@@ -1,11 +1,8 @@
 @use "../../scss/" as *;
 #product-item {
-  min-height: 450px;
   background-color: $white-color;
   position: relative;
-  @include mobile {
-    height: 400px;
-  }
+  margin-bottom: 30px;
   .favorite-add {
     position: absolute;
     top: 10px;
