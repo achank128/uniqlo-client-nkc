@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./register.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LockOutlined } from "@mui/icons-material";
 import { register } from "../../api/apiUser";
 import { useGlobalContext } from "../../hooks/useGlobalContext";
 //components
 import Navbar from "../../components/navbar/Navbar";
+import Loading from "../../components/loading/Loading";
 
 const genders = ["male", "female", "unselect"];
 
-const Register = () => {
-  const { setCurrentUser } = useGlobalContext();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [gender, setGender] = useState();
+const Register = ({ showToast }) => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [gender, setGender] = useState("");
   const [birthday, setBirthday] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState();
   const [isAgree, setIsAgree] = useState(false);
   const [errorAgree, setErrorAgree] = useState(false);
@@ -32,12 +34,17 @@ const Register = () => {
     if (isAgree) {
       try {
         setError(false);
+        setLoading(true);
         const res = await register({ email, password, birthday, gender });
-        setCurrentUser(res.data.user);
+        setLoading(false);
         localStorage.setItem("token", res.data.token);
-        alert("Sign Up completed!");
+        localStorage.setItem("currentUser", JSON.stringify(res.data.user));
+        showToast("Sign Up successful!", "success");
+        navigate("/");
       } catch (error) {
+        setLoading(false);
         setError(true);
+        showToast("Sign Up failed!", "error");
         setMsg(error.response.data?.msg);
         localStorage.removeItem("token");
       }
@@ -52,6 +59,11 @@ const Register = () => {
 
   return (
     <>
+      {loading ? (
+        <div id="loading-overlay">
+          <Loading />
+        </div>
+      ) : null}
       <Navbar />
       <div id="register">
         <div className="container">
@@ -93,6 +105,7 @@ const Register = () => {
                     <input
                       type="email"
                       placeholder="Enter a valid email"
+                      value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className={error ? "error-input" : ""}
                       onFocus={() => setError(false)}
@@ -106,8 +119,10 @@ const Register = () => {
                   </label>
                   <div className="pass-input">
                     <input
+                      placeholder="Password"
                       type={showPassword ? "text" : "password"}
                       className={error ? "error-input" : ""}
+                      value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       onFocus={() => setError(false)}
                     />
