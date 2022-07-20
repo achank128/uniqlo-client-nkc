@@ -1,8 +1,8 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, createContext } from "react";
 import reducer from "./reducer";
 import { actionTypes } from "./actionTypes";
 
-const AppContext = React.createContext();
+const AppContext = createContext();
 const initialState = {
   currentUser: null,
   wishList: [],
@@ -53,14 +53,6 @@ const AppProvider = ({ children }) => {
     dispatch({ type: actionTypes.SEARCH, payload: searchText });
   };
 
-  const setCurrentUser = (user) => {
-    dispatch({ type: actionTypes.SET_CURRENT_USER, payload: user });
-  };
-
-  const logout = () => {
-    dispatch({ type: actionTypes.LOGOUT });
-  };
-
   useEffect(() => {
     //set cart from loccalStrorage
     const lsCart = localStorage.getItem("cart");
@@ -73,12 +65,6 @@ const AppProvider = ({ children }) => {
     if (lsWishList) {
       const foundWishList = JSON.parse(lsWishList);
       dispatch({ type: actionTypes.SET_WISH_LIST, payload: foundWishList });
-    }
-    //set user from loccalStrorage
-    const lsUser = localStorage.getItem("currentUser");
-    if (lsUser) {
-      const foundUser = JSON.parse(lsUser);
-      dispatch({ type: actionTypes.SET_CURRENT_USER, payload: foundUser });
     }
   }, []);
 
@@ -99,8 +85,6 @@ const AppProvider = ({ children }) => {
         setQuantity,
         checkout,
         setSearch,
-        setCurrentUser,
-        logout,
       }}
     >
       {children}

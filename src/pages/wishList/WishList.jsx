@@ -7,7 +7,7 @@ import { Close } from "@mui/icons-material";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 
-const WishList = () => {
+const WishList = ({ showToast }) => {
   const { wishList, formater, removeFromWishList } = useGlobalContext();
 
   useEffect(() => {
@@ -43,7 +43,10 @@ const WishList = () => {
                   <div className="item" key={item._id}>
                     <div
                       className="btn-remove"
-                      onClick={() => removeFromWishList(item._id)}
+                      onClick={() => {
+                        removeFromWishList(item._id);
+                        showToast("Item has been removed!", "info");
+                      }}
                     >
                       <Close />
                     </div>
@@ -63,7 +66,7 @@ const WishList = () => {
                             {formater.format(item.priceOriginal)} VND
                           </div>
                           <div className="price-limited">
-                            {formater.format(item.priceLimited)}{" "}
+                            {formater.format(item.priceLimited)} VND
                           </div>
                         </div>
                         <div className="sale">Sale</div>

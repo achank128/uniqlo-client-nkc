@@ -10,6 +10,5 @@ export const actionTypes = {
   SET_CART: "SET_CART",
   SET_WISH_LIST: "SET_WISH_LIST",
   GET_TOTALS: "GET_TOTALS",
-  SET_CURRENT_USER: "SET_CURRENT_USER",
   LOGOUT: "LOGOUT",
 };

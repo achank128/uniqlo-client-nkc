@@ -5,7 +5,7 @@ export const createOrder = async (order) => {
   return res;
 };
 
-export const getUserOrder = async () => {
-  const res = await userRequest.get("/orders/myOrders");
+export const getUserOrder = async (id) => {
+  const res = await userRequest.get("/orders/myOrders/" + id);
   return res.data;
 };

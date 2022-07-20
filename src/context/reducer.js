@@ -114,15 +114,6 @@ const reducer = (state, action) => {
     return { ...state, wishList: action.payload };
   }
 
-  if (action.type === actionTypes.SET_CURRENT_USER) {
-    return { ...state, currentUser: action.payload };
-  }
-
-  if (action.type === actionTypes.LOGOUT) {
-    localStorage.clear();
-    return { ...state, currentUser: null };
-  }
-
   if (action.type === actionTypes.GET_TOTALS) {
     let { subtotal, amount } = state.cart.reduce(
       (cartTotal, item) => {

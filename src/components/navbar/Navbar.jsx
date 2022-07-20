@@ -22,8 +22,8 @@ import Announcement from "../announcement/Announcement";
 const navItem = ["WOMEN", "MEN", "KIDS", "BABY"];
 const Navbar = () => {
   const navigate = useNavigate();
-  const { amount, wishList, search, setSearch, currentUser, logout } =
-    useGlobalContext();
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const { amount, wishList, search, setSearch } = useGlobalContext();
   const [userOpen, setUserOpen] = useState(false);
   const [isFlyOutOn, setIsFlyOutOn] = useState(false);
   const [category, setCategory] = useState("");
@@ -141,7 +141,8 @@ const Navbar = () => {
                       </Link>
                       <li
                         onClick={() => {
-                          logout();
+                          localStorage.removeItem("currentUser");
+                          localStorage.removeItem("token");
                           navigate("/login");
                         }}
                       >

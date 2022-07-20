@@ -9,6 +9,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import Categories from "../../components/categories/Categories";
 import ProductItem from "../../components/productItem/ProductItem";
+import Loading from "../../components/loading/Loading";
 
 const sorts = [
   { title: "Featured", query: "_id" },
@@ -18,7 +19,7 @@ const sorts = [
   { title: "Top rated", query: "-rating" },
 ];
 
-const ProductList = () => {
+const ProductList = ({ showToast }) => {
   const { category } = useParams();
   const { search } = useGlobalContext();
   const [productsData, setProductsData] = useState([]);
@@ -157,40 +158,22 @@ const ProductList = () => {
             <div className="list">
               <Categories />
               {loading ? (
-                <div className="loading-container">
-                  <div className="lds-roller">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                  </div>
-                </div>
+                <Loading />
               ) : (
                 <div className="products">
                   <div className="products-container">
                     {productsData.map((product) => {
                       return (
-                        <ProductItem key={product._id} product={product} />
+                        <ProductItem
+                          key={product._id}
+                          product={product}
+                          showToast={showToast}
+                        />
                       );
                     })}
                   </div>
                   {loadingMore ? (
-                    <div className="loading-container">
-                      <div className="lds-roller">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                      </div>
-                    </div>
+                    <Loading />
                   ) : (
                     <>
                       {productsData.length < count ? (

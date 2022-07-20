@@ -4,13 +4,19 @@ import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../hooks/useGlobalContext";
 import { Add, Close, KeyboardArrowDown } from "@mui/icons-material";
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item, showToast }) => {
   const { formater, increase, setQuantity, removeItem } = useGlobalContext();
   const [quantityOn, setQuantityOn] = useState(false);
 
   return (
     <div id="item-content">
-      <button className="remove-item" onClick={() => removeItem(item._id)}>
+      <button
+        className="remove-item"
+        onClick={() => {
+          removeItem(item._id);
+          showToast("Item has been removed!", "info");
+        }}
+      >
         <Close />
       </button>
       <Link to={`/product/${item._id}`}>

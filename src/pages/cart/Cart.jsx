@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./cart.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../hooks/useGlobalContext";
 import {
   InfoOutlined,
@@ -12,7 +12,9 @@ import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import CartItem from "../../components/cartItem/CartItem";
 
-const Cart = () => {
+const Cart = ({ showToast }) => {
+  const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const { cart, subtotal, shippingFee, total, formater, amount } =
     useGlobalContext();
 
@@ -51,7 +53,7 @@ const Cart = () => {
               <div className="cart-content">
                 <div className="items">
                   {cart.map((item, index) => (
-                    <CartItem item={item} key={index} />
+                    <CartItem item={item} key={index} showToast={showToast} />
                   ))}
                 </div>
                 <div className="summary">
@@ -104,9 +106,16 @@ const Cart = () => {
                       <InfoOutlined className="icon" />
                     </span>
                   </div>
-                  <Link to="/checkout">
-                    <button className="btn-checkout">CHECKOUT</button>
-                  </Link>
+
+                  <button
+                    className="btn-checkout"
+                    onClick={() => {
+                      if (currentUser) navigate("/checkout");
+                      else showToast("Please login before checkout", "warning");
+                    }}
+                  >
+                    CHECKOUT
+                  </button>
                   <Link to="/product-list/ALL">
                     <button className="btn-continue-shopping">
                       CONTINUE SHOPPING

@@ -6,30 +6,32 @@ import { login } from "../../api/apiUser";
 import { useGlobalContext } from "../../hooks/useGlobalContext";
 //components
 import Navbar from "../../components/navbar/Navbar";
-import { Alert } from "@mui/material";
+import Loading from "../../components/loading/Loading";
 
-const Login = () => {
+const Login = ({ showToast }) => {
   const navigate = useNavigate();
-  const { setCurrentUser } = useGlobalContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [msg, setMsg] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
       setError(false);
+      setLoading(true);
       const res = await login({ email, password });
-      setCurrentUser(res.data.user);
+      setLoading(false);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("currentUser", JSON.stringify(res.data.user));
-      alert("Login successful!");
+      showToast("Login successful!", "success");
       navigate("/");
     } catch (error) {
       setError(true);
+      setLoading(false);
+      showToast("Login has been failed!", "success");
       setMsg(error.response.data?.msg);
       localStorage.removeItem("token");
     }
@@ -41,7 +43,11 @@ const Login = () => {
 
   return (
     <>
-      <Alert></Alert>
+      {loading ? (
+        <div id="loading-overlay">
+          <Loading />
+        </div>
+      ) : null}
       <Navbar />
       <div id="login">
         <div className="container">
@@ -89,6 +95,7 @@ const Login = () => {
                   <div className="input-pass">
                     <input
                       required
+                      placeholder="Password"
                       type={showPassword ? "text" : "password"}
                       value={password}
                       className={error ? "error-input" : ""}

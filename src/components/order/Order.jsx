@@ -65,9 +65,7 @@ function OrderProduct({ product }) {
     };
     apiProduct();
   }, [product.productId]);
-  return loading ? (
-    <div></div>
-  ) : (
+  return loading ? null : (
     <div className="product-item">
       <div className="product-img">
         <img src={productData.img[0]} alt="" />

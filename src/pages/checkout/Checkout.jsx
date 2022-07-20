@@ -12,8 +12,9 @@ import {
 //components
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
+import Loading from "../../components/loading/Loading";
 
-const Checkout = () => {
+const Checkout = ({ showToast }) => {
   const { cart, amount, subtotal, shippingFee, total, formater, checkout } =
     useGlobalContext();
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const Checkout = () => {
   const [districtId, setDistrictId] = useState(1);
   const [ward, setWard] = useState();
   //error
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [msg, setMsg] = useState();
   //output
@@ -98,9 +100,11 @@ const Checkout = () => {
 
     if (!fullName || !phone || !addressDetail) {
       setMsg("Please provide Full Name, Phone, Address Detail");
+      showToast("Please provide Full Name, Phone, Address Detail", "warning");
       setError(true);
     } else {
       try {
+        setLoading(true);
         const res = await createOrder({
           address,
           products,
@@ -110,9 +114,12 @@ const Checkout = () => {
           total,
         });
         checkout();
-        alert("Place Order Completed! ");
+        setLoading(false);
+        showToast("Place Order has been Completed!", "success");
         navigate("/");
       } catch (error) {
+        setLoading(false);
+        showToast("Place Order failed", "error");
         setError(true);
         setMsg(error.response.data?.msg);
       }
@@ -121,6 +128,11 @@ const Checkout = () => {
 
   return (
     <>
+      {loading ? (
+        <div id="loading-overlay">
+          <Loading />
+        </div>
+      ) : null}
       <Navbar />
       <div id="checkout">
         <div className="container">
