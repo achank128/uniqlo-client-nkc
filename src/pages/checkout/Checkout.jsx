@@ -13,6 +13,14 @@ import {
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import Loading from "../../components/loading/Loading";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 
 const Checkout = ({ showToast }) => {
   const { cart, amount, subtotal, shippingFee, total, formater, checkout } =
@@ -23,7 +31,7 @@ const Checkout = ({ showToast }) => {
   const [wardsList, setWardsList] = useState([]);
   const [provinceId, setProvinceId] = useState(1);
   const [districtId, setDistrictId] = useState(1);
-  const [ward, setWard] = useState();
+  const [ward, setWard] = useState("");
   //error
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -32,6 +40,27 @@ const Checkout = ({ showToast }) => {
   const [fullName, setFullName] = useState();
   const [phone, setPhone] = useState();
   const [addressDetail, setAddressDetail] = useState();
+  const [address, setAddress] = useState({});
+
+  //confirm
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const handleOpenConfirm = () => {
+    if (!fullName || !phone || !addressDetail) {
+      showToast("Please provide Full Name, Phone, Address Detail", "warning");
+      setMsg("Please provide Full Name, Phone, Address Detail");
+      setError(true);
+    } else {
+      const pp = provincesList.find((p) => p.code == provinceId);
+      const dd = districtsList.find((d) => d.code == districtId);
+      setAddress({
+        fullName,
+        phone,
+        addressDetail,
+        address: `${ward}, ${dd.name}, ${pp.name}`,
+      });
+      setOpenConfirm(true);
+    }
+  };
 
   useEffect(() => {
     const getProvince = async () => {
@@ -83,51 +112,36 @@ const Checkout = ({ showToast }) => {
     setWard(e.target.value);
   };
 
-  const handleOrder = async (e) => {
-    e.preventDefault();
-    const pp = provincesList.find((p) => p.code == provinceId);
-    const dd = districtsList.find((d) => d.code == districtId);
-    const address = {
-      fullName,
-      phone,
-      addressDetail,
-      address: `${ward}, ${dd.name}, ${pp.name}`,
-    };
+  const handleOrder = async () => {
     const products = cart.map((c) => {
       const { _id, color, size, quantity } = c;
       return { productId: _id, color, size, quantity };
     });
 
-    if (!fullName || !phone || !addressDetail) {
-      setMsg("Please provide Full Name, Phone, Address Detail");
-      showToast("Please provide Full Name, Phone, Address Detail", "warning");
+    try {
+      setLoading(true);
+      const res = await createOrder({
+        address,
+        products,
+        amount,
+        subtotal,
+        shippingFee,
+        total,
+      });
+      checkout();
+      setLoading(false);
+      showToast("Place Order has been Completed!", "success");
+      navigate("/");
+    } catch (error) {
+      setLoading(false);
+      showToast("Place Order failed", "error");
       setError(true);
-    } else {
-      try {
-        setLoading(true);
-        const res = await createOrder({
-          address,
-          products,
-          amount,
-          subtotal,
-          shippingFee,
-          total,
-        });
-        checkout();
-        setLoading(false);
-        showToast("Place Order has been Completed!", "success");
-        navigate("/");
-      } catch (error) {
-        setLoading(false);
-        showToast("Place Order failed", "error");
-        setError(true);
-        setMsg(error.response.data?.msg);
-      }
+      setMsg(error.response.data?.msg);
     }
   };
 
   return (
-    <>
+    <div>
       {loading ? (
         <div id="loading-overlay">
           <Loading />
@@ -135,6 +149,38 @@ const Checkout = ({ showToast }) => {
       ) : null}
       <Navbar />
       <div id="checkout">
+        <Dialog
+          open={openConfirm}
+          onClose={() => setOpenConfirm(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Confirm your order"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Full Name: <b>{address.fullName}</b>
+              <br></br>
+              Phone: <b>{address.phone}</b>
+              <br></br>
+              Address:{" "}
+              <b>
+                {address.addressDetail}, {address.address}
+              </b>
+              <br></br>
+              Order Items: <b>{amount}</b>
+              <br></br>
+              Order Total: <b>{formater.format(total)} VND</b>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenConfirm(false)}>Disagree</Button>
+            <Button onClick={handleOrder} autoFocus>
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
         <div className="container">
           <div className="wrapper">
             <div className="breadcrumb">
@@ -158,7 +204,7 @@ const Checkout = ({ showToast }) => {
                 <div className="heading">
                   <h2>ENTER YOUR ADDRESS</h2>
                 </div>
-                <form>
+                <div className="form">
                   <div className="input-container">
                     <label className="label">FULL NAME</label>
                     <div className="name-input">
@@ -259,14 +305,10 @@ const Checkout = ({ showToast }) => {
                     </p>
                   )}
 
-                  <button
-                    className="order-submit"
-                    type="submit"
-                    onClick={handleOrder}
-                  >
+                  <button className="order-submit" onClick={handleOpenConfirm}>
                     PLACE ORDER
                   </button>
-                </form>
+                </div>
               </div>
               <div className="summary">
                 <div className="summary-content">
@@ -322,7 +364,7 @@ const Checkout = ({ showToast }) => {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

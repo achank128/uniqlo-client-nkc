@@ -31,7 +31,7 @@ const Login = ({ showToast }) => {
     } catch (error) {
       setError(true);
       setLoading(false);
-      showToast("Login has been failed!", "success");
+      showToast("Login has been failed!", "error");
       setMsg(error.response.data?.msg);
       localStorage.removeItem("token");
     }
