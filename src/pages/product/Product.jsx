@@ -17,7 +17,7 @@ import {
 import { useGlobalContext } from "../../hooks/useGlobalContext";
 
 const ProductContent = ({ productData, showToast }) => {
-  const { formater, addToCart, addToWishList } = useGlobalContext();
+  const { formater, addToCart, addToWishList, wishList } = useGlobalContext();
   const [color, setColor] = useState();
   const [size, setSize] = useState();
   const [quantity, setQuantity] = useState(1);
@@ -311,7 +311,10 @@ const ProductContent = ({ productData, showToast }) => {
                   <button
                     className="favorite-add"
                     onClick={() => {
-                      addToWishList(productData);
+                      let item = wishList.find(
+                        (w) => w._id === productData._id
+                      );
+                      if (!item) addToWishList(productData);
                       showToast(
                         "Item has been added to your wish list!",
                         "info"
