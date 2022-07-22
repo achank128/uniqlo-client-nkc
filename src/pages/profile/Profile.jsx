@@ -95,7 +95,7 @@ const Profile = ({ showToast }) => {
                   </div>
                   <div className="item-info">
                     <h4>BIRTHDAY</h4>
-                    <p>{currentUser.birthday.slice(0, 10)}</p>
+                    <p>{currentUser.birthday?.slice(0, 10)}</p>
                   </div>
                   <div className="item-info">
                     <h4>GENDER</h4>
