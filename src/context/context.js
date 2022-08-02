@@ -5,13 +5,13 @@ import { actionTypes } from "./actionTypes";
 const AppContext = createContext();
 const initialState = {
   currentUser: null,
+  search: "",
   wishList: [],
   cart: [],
   amount: 0,
   shippingFee: 30000,
   subtotal: 0,
   total: 0,
-  search: "",
 };
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);

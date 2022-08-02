@@ -28,30 +28,26 @@ const reducer = (state, action) => {
     );
 
     if (isItemInCart) {
-      state.cart.map((item) => {
-        if (item._id === action.payload.item._id) {
-          if (
-            item.color === action.payload.color &&
-            item.size === action.payload.size
-          ) {
-            newCart = state.cart.map((item) =>
-              item._id === action.payload.item._id
-                ? { ...item, quantity: item.quantity + action.payload.quantity }
-                : item
-            );
-          } else {
-            newCart = [
-              ...state.cart,
-              {
-                ...action.payload.item,
-                color: action.payload.color,
-                size: action.payload.size,
-                quantity: action.payload.quantity,
-              },
-            ];
-          }
-        }
-      });
+      if (
+        isItemInCart.color === action.payload.color &&
+        isItemInCart.size === action.payload.size
+      ) {
+        newCart = state.cart.map((item) =>
+          item._id === action.payload.item._id
+            ? { ...item, quantity: item.quantity + action.payload.quantity }
+            : item
+        );
+      } else {
+        newCart = [
+          ...state.cart,
+          {
+            ...action.payload.item,
+            color: action.payload.color,
+            size: action.payload.size,
+            quantity: action.payload.quantity,
+          },
+        ];
+      }
     } else {
       newCart = [
         ...state.cart,
