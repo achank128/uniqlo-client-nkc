@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./product.scss";
+import { v4 as uuidv4 } from "uuid";
 import { Link, useParams } from "react-router-dom";
 import { getSingleProduct } from "../../api/apiProduct";
 //components
@@ -299,8 +300,9 @@ const ProductContent = ({ productData, showToast }) => {
                     addActive ? "add-to-cart add-active" : "add-to-cart"
                   }
                   onClick={() => {
+                    const itemId = uuidv4();
                     if (addActive) {
-                      addToCart(productData, size, color, quantity);
+                      addToCart(productData, size, color, quantity, itemId);
                       showToast("Item has been added to your cart!", "info");
                     }
                   }}

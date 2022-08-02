@@ -42,6 +42,7 @@ const reducer = (state, action) => {
           ...state.cart,
           {
             ...action.payload.item,
+            itemId: action.payload.itemId,
             color: action.payload.color,
             size: action.payload.size,
             quantity: action.payload.quantity,
@@ -53,6 +54,7 @@ const reducer = (state, action) => {
         ...state.cart,
         {
           ...action.payload.item,
+          itemId: action.payload.itemId,
           color: action.payload.color,
           size: action.payload.size,
           quantity: action.payload.quantity,
@@ -65,7 +67,7 @@ const reducer = (state, action) => {
 
   if (action.type === actionTypes.REMOVE_ITEM) {
     const newCart = state.cart.filter((item) => {
-      return item._id !== action.payload;
+      return item.itemId !== action.payload;
     });
     localStorage.setItem("cart", JSON.stringify(newCart));
     return { ...state, cart: newCart };
@@ -73,7 +75,7 @@ const reducer = (state, action) => {
 
   if (action.type === actionTypes.INCREASE) {
     const newCart = state.cart.map((item) => {
-      if (item._id === action.payload) {
+      if (item.itemId === action.payload) {
         return { ...item, quantity: item.quantity + 1 };
       }
       return item;
@@ -84,7 +86,7 @@ const reducer = (state, action) => {
 
   if (action.type === actionTypes.SET_QUANTITY) {
     const newCart = state.cart.map((item) => {
-      if (item._id === action.payload.id) {
+      if (item.itemId === action.payload.id) {
         return { ...item, quantity: action.payload.quantity };
       }
       return item;

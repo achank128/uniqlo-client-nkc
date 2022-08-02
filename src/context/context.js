@@ -26,10 +26,10 @@ const AppProvider = ({ children }) => {
     dispatch({ type: actionTypes.REMOVE_FROM_WISH_LIST, payload: id });
   };
 
-  const addToCart = (item, size, color, quantity) => {
+  const addToCart = (item, size, color, quantity, itemId) => {
     dispatch({
       type: actionTypes.ADD_TO_CART,
-      payload: { item, size, color, quantity },
+      payload: { item, size, color, quantity, itemId },
     });
   };
 

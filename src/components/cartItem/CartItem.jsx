@@ -13,7 +13,7 @@ const CartItem = ({ item, showToast }) => {
       <button
         className="remove-item"
         onClick={() => {
-          removeItem(item._id);
+          removeItem(item.itemId);
           showToast("Item has been removed!", "info");
         }}
       >
@@ -45,7 +45,10 @@ const CartItem = ({ item, showToast }) => {
                 <KeyboardArrowDown className="arrow-down-icon" />
               </span>
             </div>
-            <button className="inc-quanlity" onClick={() => increase(item._id)}>
+            <button
+              className="inc-quanlity"
+              onClick={() => increase(item.itemId)}
+            >
               <Add className="add-icon" />
             </button>
             <ul
@@ -53,7 +56,7 @@ const CartItem = ({ item, showToast }) => {
             >
               <li
                 onClick={() => {
-                  setQuantity(item._id, 1);
+                  setQuantity(item.itemId, 1);
                   setQuantityOn(!quantityOn);
                 }}
               >
@@ -61,7 +64,7 @@ const CartItem = ({ item, showToast }) => {
               </li>
               <li
                 onClick={() => {
-                  setQuantity(item._id, 2);
+                  setQuantity(item.itemId, 2);
                   setQuantityOn(!quantityOn);
                 }}
               >
@@ -69,7 +72,7 @@ const CartItem = ({ item, showToast }) => {
               </li>
               <li
                 onClick={() => {
-                  setQuantity(item._id, 3);
+                  setQuantity(item.itemId, 3);
                   setQuantityOn(!quantityOn);
                 }}
               >
@@ -77,7 +80,7 @@ const CartItem = ({ item, showToast }) => {
               </li>
               <li
                 onClick={() => {
-                  setQuantity(item._id, 4);
+                  setQuantity(item.itemId, 4);
                   setQuantityOn(!quantityOn);
                 }}
               >
@@ -85,7 +88,7 @@ const CartItem = ({ item, showToast }) => {
               </li>
               <li
                 onClick={() => {
-                  setQuantity(item._id, 5);
+                  setQuantity(item.itemId, 5);
                   setQuantityOn(!quantityOn);
                 }}
               >
