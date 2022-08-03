@@ -3,7 +3,6 @@ import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { InfoOutlined } from "@mui/icons-material";
 import { login } from "../../api/apiUser";
-import { useGlobalContext } from "../../hooks/useGlobalContext";
 //components
 import Navbar from "../../components/navbar/Navbar";
 import Loading from "../../components/loading/Loading";

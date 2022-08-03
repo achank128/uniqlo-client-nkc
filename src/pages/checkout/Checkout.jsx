@@ -50,8 +50,8 @@ const Checkout = ({ showToast }) => {
       setMsg("Please provide Full Name, Phone, Address Detail");
       setError(true);
     } else {
-      const pp = provincesList.find((p) => p.code == provinceId);
-      const dd = districtsList.find((d) => d.code == districtId);
+      const pp = provincesList.find((p) => p.code === parseInt(provinceId));
+      const dd = districtsList.find((d) => d.code === parseInt(districtId));
       setAddress({
         fullName,
         phone,
@@ -120,7 +120,7 @@ const Checkout = ({ showToast }) => {
 
     try {
       setLoading(true);
-      const res = await createOrder({
+      await createOrder({
         address,
         products,
         amount,

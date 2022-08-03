@@ -2,17 +2,17 @@
 #slider {
   margin-top: $topHeight;
   .warpper {
+    scroll-snap-type: y mandatory;
+    height: calc(100vh - $topHeight);
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     .slider-item {
-      height: calc(100vh - $topHeight);
-      width: 100%;
       position: relative;
-      overflow: hidden;
-      @include tablet {
-        height: calc(70vh - $topHeight);
-      }
-      @include mobile {
-        height: calc(60vh - $topHeight);
-      }
+      width: 100%;
+      height: calc(100vh - $topHeight);
+      scroll-snap-align: end;
       .btn-prev-slide {
         @include btnSlide;
         bottom: 20px;
@@ -41,6 +41,26 @@
           padding: 0 5px;
         }
       }
+      .controls-slide-item {
+        @include btnSlide;
+        left: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        flex-direction: column;
+        gap: 8px;
+        .item {
+          width: 5px;
+          height: 5px;
+          border: 1.5px solid $white-color;
+          border-radius: 50%;
+          transition: all 1s ease-in;
+        }
+        .active {
+          width: 8px;
+          height: 8px;
+          background-color: $white-color;
+        }
+      }
     }
     .slide {
       transition: all 0.3s ease-out 0.2s;
@@ -59,12 +79,14 @@
         justify-content: center;
         img {
           width: 100%;
+          object-fit: cover;
         }
         video {
           width: 100%;
-          @include mobile {
-            width: 760px;
-            height: auto;
+          object-fit: cover;
+          @include tablet {
+            //width: 800px;
+            height: 100%;
           }
         }
       }

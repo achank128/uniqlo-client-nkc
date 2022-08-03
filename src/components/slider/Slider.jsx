@@ -8,7 +8,9 @@ const Slider = () => {
     <div id="slider">
       <div className="warpper">
         {SlidersData.map((slideItem, index) => {
-          return <SlideItem SlideItem={slideItem} key={index} />;
+          return (
+            <SlideItem key={index} SlideItem={slideItem} sliderIndex={index} />
+          );
         })}
       </div>
     </div>

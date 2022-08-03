@@ -3,7 +3,6 @@ import "./register.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { LockOutlined } from "@mui/icons-material";
 import { register } from "../../api/apiUser";
-import { useGlobalContext } from "../../hooks/useGlobalContext";
 //components
 import Navbar from "../../components/navbar/Navbar";
 import Loading from "../../components/loading/Loading";

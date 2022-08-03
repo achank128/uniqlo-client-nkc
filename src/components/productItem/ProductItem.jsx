@@ -15,7 +15,7 @@ const ProductItem = ({ product, showToast }) => {
     wishList.forEach((w) => {
       if (w._id === product._id) setIsAddToWishList(true);
     });
-  }, []);
+  }, [product._id, wishList]);
 
   return (
     <div id="product-item">

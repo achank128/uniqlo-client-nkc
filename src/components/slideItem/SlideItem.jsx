@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import { SlidersData } from "../../data";
 
-const SlideItem = ({ SlideItem }) => {
+const SlideItem = ({ SlideItem, sliderIndex }) => {
   const { id, slide, category, title, desc } = SlideItem;
   const [index, setIndex] = useState(0);
   const lengthSlide = slide.length;
@@ -25,8 +26,19 @@ const SlideItem = ({ SlideItem }) => {
       return index;
     });
   };
+
   return (
     <div className="slider-item" key={id}>
+      <div className="controls-slide-item">
+        {SlidersData.map((slide, i) => {
+          if (i === sliderIndex) {
+            return <div className="item active" key={i}></div>;
+          } else {
+            return <div className="item" key={i}></div>;
+          }
+        })}
+      </div>
+
       <div className="btn-prev-slide" onClick={prevSlide}>
         <ArrowBackIos className="icon" />
         <span>PREVIOUS</span>

@@ -9,7 +9,7 @@
     .title {
       width: 60%;
       display: flex;
-      align-items: start;
+      align-items: flex-start;
       justify-content: space-between;
       margin-bottom: 50px;
       @include tablet {
@@ -43,7 +43,7 @@
       .input-container {
         display: flex;
         align-items: flex-start;
-        justify-content: start;
+        justify-content: flex-start;
         margin-bottom: 30px;
       }
 

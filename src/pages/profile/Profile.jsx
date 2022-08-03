@@ -30,7 +30,7 @@ const Profile = ({ showToast }) => {
       }
     };
     apiOrder();
-  }, []);
+  }, [currentUser.userId, showToast]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
