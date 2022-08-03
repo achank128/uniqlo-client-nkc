@@ -6,10 +6,10 @@ html {
   font-size: 100%;
   box-sizing: border-box;
   @include tablet {
-    font-size: 90%;
+    font-size: 95%;
   }
   @include mobile {
-    font-size: 80%;
+    font-size: 90%;
   }
 }
 *,
