@@ -13,6 +13,7 @@
       width: 100%;
       height: calc(100vh - $topHeight);
       scroll-snap-align: end;
+      overflow: hidden;
       .btn-prev-slide {
         @include btnSlide;
         bottom: 20px;
